@@ -1,4 +1,7 @@
 # react-components
 
-## 1. 로딩 컴포넌트
+## 1. Loading
 ![img](./img/Loading.gif)
+
+## 2. Skeleton
+![img](./img/Skeleton.gif)
