@@ -56,6 +56,7 @@ const StyledLoading = styled.div`
   background-color: rgba(255, 255, 255, 0);
   ${(props) => props.childrenDelay}
 `;
+
 const defaultColor = ["#8dc8fc", "#cdeb60", "#fca78d"];
 
 const Loading = ({ colors = defaultColor, number = 3 }) => {

@@ -22,13 +22,13 @@ function App() {
     <>
       <Loading />
 
-      <Skeleton width={"300px"} height={"200px"}>
-        <Rectangle width={"300px"} height={"200px"} />
+      <Skeleton width="300px" height="200px" animation="blink">
+        <Rectangle width="300px" height="200px" />
         <SkelDiv>
-          <Circle radius={"50px"} />
+          <Circle radius="50px" />
           <div className='text-skel'>
-            <Rectangle width={"240px"} height={"20px"} />
-            <Rectangle width={"240px"} height={"20px"} />
+            <Rectangle width="240px" height="20px" />
+            <Rectangle width="240px" height="20px" />
           </div>
         </SkelDiv>
       </Skeleton>
