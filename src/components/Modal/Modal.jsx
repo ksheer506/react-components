@@ -1,13 +1,36 @@
-import { useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { Background, Close, ModalMain } from "./styles";
 
-// TODO: 화면 줄어들 때 비율 유지하면서 크기 줄이기
-// TODO: 다른 컴포넌트 어디서 사용하든 항상 root 바로 아래에 위치할 수 있도록
-const Modal = ({ width, height, background = true, children }) => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [mount, setMount] = useState(true);
+export const MainCtx = createContext(null);
+const OpenCtx = createContext(null);
 
-  const closeModal = () => setIsOpen(false);
+// TODO: 화면 줄어들 때 비율 유지하면서 크기 줄이기
+const Modal = ({ width, height, background = true, content }) => {
+  const { isOpen, setIsOpen } = useContext(OpenCtx);
+
+  return (
+    <>
+      {background && <Background isMount={isOpen} onClick={() => setIsOpen(false)} />}
+      <ModalMain isMount={isOpen} width={width} height={height}>
+        <Close onClick={() => setIsOpen(false)}>
+          <img src="https://img.icons8.com/color-glass/48/000000/delete-sign.png" />
+        </Close>
+        {content}
+      </ModalMain>
+    </>
+  );
+};
+
+export const ModalCtx = ({ width, height, background = true, children }) => {
+  const [mount, setMount] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [content, setContent] = useState(null);
+
+  const openModal = useCallback((component) => {
+    setMount(true);
+    setIsOpen(true);
+    setContent(component);
+  }, []);
 
   useEffect(() => {
     let timerId;
@@ -20,19 +43,14 @@ const Modal = ({ width, height, background = true, children }) => {
   }, [isOpen]);
 
   return (
-    <>
-      {mount && (
-        <div className="modal">
-          {background && <Background isMount={isOpen} onClick={() => closeModal()} />}
-          <ModalMain isMount={isOpen} width={width} height={height}>
-            <Close onClick={() => closeModal()}>
-              <img src="https://img.icons8.com/color-glass/48/000000/delete-sign.png" />
-            </Close>
-            {children}
-          </ModalMain>
-        </div>
-      )}
-    </>
+    <MainCtx.Provider value={openModal}>
+      <OpenCtx.Provider value={{ isOpen, setIsOpen }}>
+        {mount && (
+          <Modal width={width} height={height} background={background} content={content} />
+        )}
+        {children}
+      </OpenCtx.Provider>
+    </MainCtx.Provider>
   );
 };
 
