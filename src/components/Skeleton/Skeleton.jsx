@@ -24,7 +24,7 @@ export const Circle = styled(SkelItemDefault)`
     `}
 `;
 
-export default function Skeleton({ width, height, children, animation = "blink" }) {
+export const Skeleton = ({ width, height, children, animation = "blink" }) => {
   return (
     <ThemeProvider theme={{ animation }}>
       <Skelcontainer width={width} height={height}>
