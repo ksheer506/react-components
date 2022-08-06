@@ -10,7 +10,7 @@ export const Background = styled.div`
   background-color: #696969ba;
   opacity: 0.6;
   ${(props) => css`
-    animation: ${props.isMount ? fadeIn : fadeOut} 0.6s linear;
+    animation: ${props.isMount ? fadeIn : fadeOut} 0.4s linear;
   `}
 
   z-index: 99;
@@ -21,7 +21,7 @@ export const ModalMain = styled.div`
   ${(props) => css`
     width: ${props.width};
     height: ${props.height};
-    animation: ${props.isMount ? fadeIn : fadeOut} 0.6s ease-out;
+    animation: ${props.isMount ? fadeIn : fadeOut} 0.4s ease-out;
   `}
 
   position: absolute;
