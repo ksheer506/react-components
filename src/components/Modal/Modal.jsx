@@ -5,6 +5,7 @@ export const MainCtx = createContext(null);
 const OpenCtx = createContext(null);
 
 // TODO: 화면 줄어들 때 비율 유지하면서 크기 줄이기
+// TODO: Modal 위치 커스텀 가능하도록 수정
 const Modal = ({ width, height, background = true, content }) => {
   const { isOpen, setIsOpen } = useContext(OpenCtx);
 
@@ -36,8 +37,9 @@ export const ModalCtx = ({ width, height, background = true, children }) => {
     let timerId;
 
     if (!isOpen) {
-      timerId = setTimeout(() => setMount(false), 1000);
+      timerId = setTimeout(() => setMount(false), 450);
     }
+    document.body.style.overflowY = isOpen ? "hidden" : "auto";
 
     return () => clearTimeout(timerId);
   }, [isOpen]);
@@ -48,8 +50,8 @@ export const ModalCtx = ({ width, height, background = true, children }) => {
         {mount && (
           <Modal width={width} height={height} background={background} content={content} />
         )}
-        {children}
       </OpenCtx.Provider>
+      {children}
     </MainCtx.Provider>
   );
 };
