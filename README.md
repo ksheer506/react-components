@@ -66,7 +66,7 @@ root.render(
 ```javascript
 import { useModal } from './components/index';
 
-function App() {
+const App = () => {
   const openModal = useModal();
 
   return (
