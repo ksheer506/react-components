@@ -1,32 +1,26 @@
 import styled, { css } from "styled-components";
-import { fadeIn, fadeOut, upward } from "./animation";
+import { fadeIn, fadeOut } from "./animation";
 
 export const Background = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0%;
   left: 0%;
   width: 100vw;
   height: 100vh;
   background-color: #696969ba;
   opacity: 0.6;
+  z-index: 99;
+
   ${(props) => css`
     animation: ${props.isMount ? fadeIn : fadeOut} 0.4s linear;
   `}
-
-  z-index: 99;
   animation-fill-mode: forwards;
 `;
 
 export const ModalMain = styled.div`
-  ${(props) => css`
-    width: ${props.width};
-    height: ${props.height};
-    animation: ${props.isMount ? fadeIn : fadeOut} 0.4s ease-out;
-  `}
-
-  position: absolute;
-  top: 50%;
+  position: fixed;
   left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
   box-shadow: 1px 1px 5px rgb(206, 206, 206);
@@ -35,6 +29,19 @@ export const ModalMain = styled.div`
   box-sizing: border-box;
   z-index: 100;
   overflow: hidden;
+
+  ${({ width, height, isMount, position }) => css`
+    width: ${width};
+    height: ${height};
+    animation: ${isMount ? fadeIn : fadeOut} 0.4s ease-out;
+
+    ${position &&
+    css`
+      left: ${position.x};
+      top: ${position.y};
+      transform: translate(0, 0);
+    `}
+  `}
   animation-fill-mode: forwards;
 `;
 

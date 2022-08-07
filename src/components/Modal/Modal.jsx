@@ -2,18 +2,18 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 import { Background, Close, ModalMain } from "./styles";
 
 export const MainCtx = createContext(null);
-export const reSizeCtx = createContext(null);
+export const CustomizeCtx = createContext(null);
 const OpenCtx = createContext(null);
 
 // TODO: 화면 줄어들 때 비율 유지하면서 크기 줄이기
 // TODO: Modal 위치 커스텀 가능하도록 수정
-const Modal = ({ width, height, background = true, content }) => {
+const Modal = ({ width, height, position, background = true, content }) => {
   const { isOpen, setIsOpen } = useContext(OpenCtx);
 
   return (
     <>
       {background && <Background isMount={isOpen} onClick={() => setIsOpen(false)} />}
-      <ModalMain isMount={isOpen} width={width} height={height}>
+      <ModalMain isMount={isOpen} width={width} height={height} position={position}>
         <Close onClick={() => setIsOpen(false)}>
           <img src="https://img.icons8.com/color-glass/48/000000/delete-sign.png" />
         </Close>
@@ -23,10 +23,16 @@ const Modal = ({ width, height, background = true, content }) => {
   );
 };
 
+const customize = {
+  setSize: null,
+  setPosition: null,
+};
+
 export const ModalCtx = ({ width, height, background = true, children }) => {
   const [mount, setMount] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [size, setSize] = useState({ width, height });
+  const [position, setPosition] = useState(null);
   const [content, setContent] = useState(null);
 
   const openModal = useCallback((component) => {
@@ -46,21 +52,25 @@ export const ModalCtx = ({ width, height, background = true, children }) => {
     return () => clearTimeout(timerId);
   }, [isOpen]);
 
+  customize.setSize = setSize;
+  customize.setPosition = setPosition;
+
   return (
     <MainCtx.Provider value={openModal}>
-      <reSizeCtx.Provider value={setSize}>
+      <CustomizeCtx.Provider value={customize}>
         <OpenCtx.Provider value={{ isOpen, setIsOpen }}>
           {mount && (
             <Modal
               width={size.width}
               height={size.height}
+              position={position}
               background={background}
               content={content}
             />
           )}
         </OpenCtx.Provider>
         {children}
-      </reSizeCtx.Provider>
+      </CustomizeCtx.Provider>
     </MainCtx.Provider>
   );
 };

@@ -1,26 +1,41 @@
 import { useContext, useEffect } from "react";
-import { MainCtx, reSizeCtx } from "./Modal";
+import { MainCtx, CustomizeCtx } from "./Modal";
 
-// TODO: 여기서 Modal의 크기를 설정하는 방법?
-const useModal = (w, h) => {
+const unitConverter = (input) => {
+  if (!input) return {};
+
+  for (const key in input) {
+    if (typeof input[key] === "number") {
+      const value = input[key];
+
+      input[key] = `${value}px`;
+    }
+  }
+
+  return input;
+}
+
+const useModal = (size, position) => {
   const openModal = useContext(MainCtx);
-  const setSize = useContext(reSizeCtx);
+  const { setSize, setPosition } = useContext(CustomizeCtx);
 
   if (!openModal || !setSize) {
     throw new Error("useModal was used outside of ModalCtx.Provider.")
   }
 
   useEffect(() => {
-    if (!w || !h) return;
+    if (!size) return;
+    const { w, h } = unitConverter(size);
 
-    if (typeof w === "number") {
-      w = `${w}px`;
-    }
-    if (typeof h === "number") {
-      h = `${h}px`;
-    }
     setSize({ width: w, height: h });
-  }, [])
+  }, [size]);
+
+  useEffect(() => {
+    if (!position) return;
+    const { x, y } = unitConverter(position);
+
+    setPosition({ x, y });
+  }, [position]);
 
   return openModal;
 }
