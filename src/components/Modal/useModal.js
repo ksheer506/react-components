@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { MainCtx, CustomizeCtx } from "./Modal";
+import { MainCtx, CustomizeCtx } from "./ModalContext";
 
 const unitConverter = (input) => {
   if (!input) return {};
@@ -21,6 +21,10 @@ const useModal = (size, position) => {
 
   if (!openModal || !setSize) {
     throw new Error("useModal was used outside of ModalCtx.Provider.")
+  }
+  if (typeof position === "number") {
+    size = { w: size, h: position };
+    position = undefined;
   }
 
   useEffect(() => {
