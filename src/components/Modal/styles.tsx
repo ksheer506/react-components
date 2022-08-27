@@ -1,5 +1,13 @@
-import styled, { css } from "styled-components";
-import { fadeIn, fadeOut } from "./animation";
+import styled, { css } from 'styled-components';
+
+import { fadeIn, fadeOut } from './animation';
+import { ModalStyle } from './types';
+
+export interface BackgroundProps {
+  isMount: boolean;
+}
+
+type ModalMainProps = ModalStyle & BackgroundProps;
 
 export const Background = styled.div`
   position: fixed;
@@ -11,29 +19,38 @@ export const Background = styled.div`
   opacity: 0.6;
   z-index: 99;
 
-  ${(props) => css`
-    animation: ${props.isMount ? fadeIn : fadeOut} 0.4s linear;
+  ${({ isMount }: BackgroundProps) => css`
+    animation: ${isMount ? fadeIn : fadeOut} 0.3s linear;
   `}
   animation-fill-mode: forwards;
 `;
 
 export const ModalMain = styled.div`
   position: fixed;
-  left: 50%;
-  top: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
   box-shadow: 1px 1px 5px rgb(206, 206, 206);
-  border-radius: 10px;
-  padding: 20px;
   box-sizing: border-box;
   z-index: 100;
   overflow: hidden;
 
-  ${({ width, height, isMount, position }) => css`
+  ${({
+    width,
+    height,
+    minWidth,
+    minHeight,
+    isMount,
+    position = { x: '50%', y: '50%' },
+    borderRadius = '10px',
+    boxShadow,
+  }: ModalMainProps) => css`
     width: ${width};
     height: ${height};
-    animation: ${isMount ? fadeIn : fadeOut} 0.4s ease-out;
+    min-width: ${minWidth};
+    min-height: ${minHeight};
+    animation: ${isMount ? fadeIn : fadeOut} 0.3s ease-out;
+    border-radius: ${borderRadius};
+    box-shadow: ${boxShadow};
 
     ${position &&
     css`
