@@ -58,21 +58,32 @@ import { Modal } from "./components/index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Modal width="300px" height="400px">
+  <Modal 
+    width="300px" 
+    height="400px"
+    backgorund={false}
+    minWidth="300px"
+  >
     <App />
   </Modal>
 );
 ```
+
 ```javascript
-import { useModal } from './components/index';
+import { useModal } from "./components/index";
 
 const App = () => {
-  const openModal = useModal(300, 200); // override initial size
+  const openModal = useModal({
+    width: "200px",
+    height: "200px",
+    position: { x: "0px", y: "20px" },
+  }); // override initial settings
 
   return (
-    <div className='main'>
+    <div className="main">
       <button onClick={() => openModal(<p>this is Modal.</p>)}>open</button>
+      <button onClick={() => closeModal()}>close</button>
     </div>
   );
-}
+};
 ```
