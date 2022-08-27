@@ -73,7 +73,7 @@ root.render(
 import { useModal } from "./components/index";
 
 const App = () => {
-  const openModal = useModal({
+  const { openModal, closeModal } = useModal({
     width: "200px",
     height: "200px",
     position: { x: "0px", y: "20px" },
