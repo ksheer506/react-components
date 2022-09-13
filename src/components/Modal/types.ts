@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export interface OpenContext {
   isOpen: boolean;
@@ -19,11 +19,9 @@ export interface Size {
   minHeight?: string;
 }
 
-export type SizeParam = Size | number;
-
 export interface CustomizeContext {
-  setSize: null | ((size: Size) => void);
-  setPosition: null | ((size: Position) => void);
+  setSize: null | Dispatch<SetStateAction<Size>>;
+  setPosition: null | Dispatch<SetStateAction<Position>>;
 }
 
 export interface MainContext {

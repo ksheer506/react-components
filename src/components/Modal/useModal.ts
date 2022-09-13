@@ -1,24 +1,36 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { tagFormat } from '../../utils';
 
 import { CustomizeCtx, MainCtx } from './ModalContext';
-import { ModalStyle } from './types';
+import { Position, Size } from './types';
+import useAppContext from './useAppContext';
 
-const useModal = ({
-  width,
-  height,
-  position,
-  borderRadius,
-  boxShadow,
-}: ModalStyle) => {
-  const { openModal, closeModal } = useContext(MainCtx) || {};
-  const { setSize, setPosition } = useContext(CustomizeCtx) || {};
+type useModalProps =
+  | {
+      width?: string;
+      height?: string;
+      position?: Position;
+      borderRadius?: string;
+      boxShadow?: string;
+    }
+  | undefined;
+
+const useModal = (props?: useModalProps) => {
+  const { width, height, position, borderRadius, boxShadow } = props || {};
+  const { openModal, closeModal } = useAppContext(MainCtx);
+  const { setSize, setPosition } = useAppContext(CustomizeCtx);
 
   if (!openModal || !closeModal || !setSize || !setPosition) {
     throw new Error('useModal was used outside of ModalCtx.Provider.');
   }
+
   useEffect(() => {
-    console.log('현재 Modal 크기', { width, height });
-    setSize({ width, height });
+    setSize((prev: Size) => {
+      if (!width && height) return { ...prev, height };
+      if (!height && width) return { ...prev, width };
+      if (height && width) return { width, height };
+      return prev;
+    });
   }, [width, height, setSize]);
 
   useEffect(() => {
@@ -32,3 +44,17 @@ const useModal = ({
 };
 
 export default useModal;
+
+const tagFormatMiddleware = (data: Record<string, unknown>) => {
+  if ('questionTags' in data) {
+    data.questionTags = tagFormat(data.questionTags);
+  }
+
+  return data;
+};
+
+tagFormatMiddleware({
+  a: 'fhd',
+  b: 3,
+  4: 3,
+});
