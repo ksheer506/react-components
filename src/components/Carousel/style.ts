@@ -55,14 +55,14 @@ interface ItemProps {
   animationTime: number;
 }
 
-export const SItemBox = styled.div`
+export const SItemList = styled.li<ItemProps>`
   flex: 0 0 100vw;
   position: absolute;
   width: 100%;
   right: -100%;
   z-index: -1;
   overflow: hidden;
-  transition: ${({ animationTime }: ItemProps) => `${animationTime}ms`} all;
+  transition: ${({ animationTime }) => `${animationTime}ms`} all;
 
   &.main {
     right: 0%;
