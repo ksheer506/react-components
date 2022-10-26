@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { tagFormat } from '../../utils';
 
 import { CustomizeCtx, MainCtx } from './ModalContext';
 import { Position, Size } from './types';
@@ -44,17 +43,3 @@ const useModal = (props?: useModalProps) => {
 };
 
 export default useModal;
-
-const tagFormatMiddleware = (data: Record<string, unknown>) => {
-  if ('questionTags' in data) {
-    data.questionTags = tagFormat(data.questionTags);
-  }
-
-  return data;
-};
-
-tagFormatMiddleware({
-  a: 'fhd',
-  b: 3,
-  4: 3,
-});
