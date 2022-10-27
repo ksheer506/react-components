@@ -58,7 +58,7 @@ import { Modal } from "./components";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Modal width="300px" height="400px" backgorund={false} minWidth="300px">
+  <Modal width="300px" height="400px" background={false} minWidth="300px">
     <App />
   </Modal>
 );
