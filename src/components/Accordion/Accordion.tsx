@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { EventHandler, ReactNode, SyntheticEvent, useCallback } from "react";
+import { ReactNode, SyntheticEvent, useCallback } from "react";
 import { FlattenSimpleInterpolation } from "styled-components";
 
 import {
@@ -61,7 +61,8 @@ const Accordion = ({
   children,
 }: AccordionProps) => {
   const { title: titleStyle, titleBox, cardBox } = extraStyles || {};
-  const { contentRef, isCollapsed, setIsCollapsed } = useToggleFolding();
+  const { contentRef, isCollapsed, setIsCollapsed } =
+    useToggleFolding<HTMLDivElement>();
 
   const alwaysOpen = useCallback(
     ({ target }: SyntheticEvent<HTMLDetailsElement>) => {
