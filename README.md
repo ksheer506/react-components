@@ -5,7 +5,7 @@
 ![img](./img/Loading.gif)
 
 ```javascript
-import { Loading } from "./components/index";
+import { Loading } from "./components";
 
 const colors = ["#8dc8fc", "#cdeb60", "#fca78d"];
 
@@ -19,7 +19,7 @@ const App = () => {
 ![img](./img/Skeleton.gif)
 
 ```javascript
-import { Skeleton, Circle, Rectangle } from "./components/index";
+import { Skeleton, Circle, Rectangle } from "./components";
 
 const SkelDiv = styled.div`
   display: flex;
@@ -54,23 +54,18 @@ const App = () => {
 ## 3. Modal
 
 ```javascript
-import { Modal } from "./components/index";
+import { Modal } from "./components";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Modal 
-    width="300px" 
-    height="400px"
-    backgorund={false}
-    minWidth="300px"
-  >
+  <Modal width="300px" height="400px" backgorund={false} minWidth="300px">
     <App />
   </Modal>
 );
 ```
 
 ```javascript
-import { useModal } from "./components/index";
+import { useModal } from "./components";
 
 const App = () => {
   const { openModal, closeModal } = useModal({
@@ -84,6 +79,20 @@ const App = () => {
       <button onClick={() => openModal(<p>this is Modal.</p>)}>open</button>
       <button onClick={() => closeModal()}>close</button>
     </div>
+  );
+};
+```
+
+## 4. Accordion
+
+```javascript
+import { Accordion } from "./components";
+
+const App = () => {
+  return (
+    <Accordion title="제목" isCollapsable>
+      <div>상세 설명입니다.</div>
+    </Accordion>
   );
 };
 ```
