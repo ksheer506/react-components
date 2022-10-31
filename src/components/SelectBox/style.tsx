@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
-import { ReactComponent as UpDown } from "./updown.svg";
+
 import { OptionListProps } from "./SelectBox";
+import { ReactComponent as UpDown } from "./updown.svg";
 
 export const SSelect = styled.button`
   position: relative;
