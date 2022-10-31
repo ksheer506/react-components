@@ -10,7 +10,7 @@ const useToggleFolding = <T extends HTMLElement>() => {
   }, []);
 
   const collapse = useCallback((e: T) => {
-    e.style.height = `0px`;
+    e.style.height = "0px";
   }, []);
 
   useEffect(() => {

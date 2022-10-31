@@ -1,23 +1,25 @@
 import styled, { css } from "styled-components";
-import { blink, wave } from "./animation";
 
-export const Skelcontainer = styled.div`
+import { blink, wave } from "./animation";
+import { SkeletonProps } from "./Skeleton";
+
+export type SkeletonDefaultProps = Omit<SkeletonProps, "children">;
+
+export const Skelcontainer = styled.div<SkeletonDefaultProps>`
   display: flex;
   position: relative;
   flex-flow: column nowrap;
   row-gap: 5px;
   justify-content: center;
 
-  ${(props) =>
-    props.width &&
-    props.height &&
+  ${({ width, height }) =>
+    width &&
+    height &&
     css`
-      width: ${props.width};
-      height: ${props.height};
-    `}
-
-  ${({ theme }) =>
-    theme.animation === "wave" &&
+      width: ${width};
+      height: ${height};
+    `}/*   ${({ animation }) =>
+    animation === "wave" &&
     css`
       &::before {
         content: "";
@@ -30,23 +32,21 @@ export const Skelcontainer = styled.div`
         filter: blur(35px);
         transform: skewX(-20deg);
         background-color: #a7a7a7;
-        /* z-index: 2; */
+        z-index: 2;
         animation: ${wave} 1s linear infinite;
       }
-    `}
+    `} */
 `;
 
-export const SkelItemDefault = styled.div`
+export const SkelItemDefault = styled.div<SkeletonDefaultProps>`
   position: relative;
   overflow: hidden;
   background-color: #f5f5f5;
 
-  // TODO: wave가 자식 컴포넌트들 안에서 잘리도록
-
-  ${({ theme }) =>
-    theme.animation === "blink"
+  ${({ animation }) =>
+    animation === "blink"
       ? css`
-          animation: ${blink} 1.5s ease infinite;
+          animation: ${blink} 0.5s ease infinite;
         `
       : css`
           &::before {
@@ -56,8 +56,6 @@ export const SkelItemDefault = styled.div`
             width: 100%;
             height: 100%;
             background-color: #f0f0f0;
-            /* z-index: 0; */
           }
         `}
 `;
-
