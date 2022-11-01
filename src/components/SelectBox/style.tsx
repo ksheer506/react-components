@@ -52,26 +52,31 @@ export const SUList = styled.ul<OptionListProps>`
 `;
 
 export const SOption = styled.li`
-  flex: 0 0 25px;
+  flex: 0 0 33px;
   position: relative;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  background-color: white;
-  color: #575757;
+  background-color: #ffffff;
+  color: #464646;
   padding: 5px;
   list-style: none;
+  box-sizing: border-box;
   overflow: hidden;
   transition: 400ms all;
+  z-index: 5;
 
   &:hover {
+    background-color: #f0f0f0;
     transition: 400ms all;
   }
 
-  ${({ color }) => css`
-    &:hover {
-      background-color: ${color};
-      color: white;
-    }
-  `}
+  ${({ color }) =>
+    color &&
+    css`
+      &:hover {
+        background-color: ${color};
+        color: white;
+      }
+    `}
 `;
