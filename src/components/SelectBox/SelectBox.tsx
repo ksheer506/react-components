@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
-import { ReactNode, RefObject, useCallback, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { forwardRef, ReactNode, RefObject, useCallback, useState } from "react";
 
 import { ScrollSVG, SOption, SSelect, SUList } from "./style";
 import useToggleFolding from "./useToggleFolding";
@@ -8,11 +8,11 @@ import useToggleFolding from "./useToggleFolding";
 interface Item {
   value: string;
   content?: ReactNode;
-  color: string;
+  color?: string;
 }
 
 interface OptionProps extends Item {
-  onClick: () => void;
+  onClick(): void;
 }
 
 export interface OptionListProps {
@@ -23,26 +23,42 @@ export interface OptionListProps {
 interface SelectBoxProps {
   options: Item[];
   placeholder: string;
+  defaultValue?: string;
+  onSelected?(value: string): void;
 }
 
-
-
-const Option = ({ value, content, color, onClick }: OptionProps) => {
+const Option = forwardRef<HTMLLIElement, OptionProps>(function Option(
+  { value, content, color, onClick },
+  ref
+) {
   return (
-    <SOption color={color} onClick={onClick}>
+    <SOption color={color} onClick={onClick} ref={ref}>
       {content || value}
     </SOption>
   );
-};
+});
 
-const SelectBox = ({ options, placeholder }: SelectBoxProps) => {
-  const [selected, setSelected] = useState(placeholder);
+const SelectBox = forwardRef<HTMLLIElement, SelectBoxProps>(function SelectBox(
+  { options, defaultValue, placeholder, onSelected },
+  ref
+) {
+  const [selected, setSelected] = useState(defaultValue || placeholder);
   const { contentRef, isCollapsed, setIsCollapsed } =
     useToggleFolding<HTMLUListElement>();
 
   const onClick = useCallback(() => {
     setIsCollapsed((prev) => !prev);
   }, []);
+
+  const handleSelect = useCallback(
+    (value: string) => {
+      setSelected(value);
+      if (onSelected) {
+        onSelected(value);
+      }
+    },
+    [onSelected]
+  );
 
   return (
     <SSelect onClick={onClick}>
@@ -55,13 +71,14 @@ const SelectBox = ({ options, placeholder }: SelectBoxProps) => {
             value={value}
             content={content}
             color={color}
-            onClick={() => setSelected(value)}
+            onClick={() => handleSelect(value)}
+            ref={ref}
             key={i}
           />
         ))}
       </SUList>
     </SSelect>
   );
-};
+});
 
 export default SelectBox;
