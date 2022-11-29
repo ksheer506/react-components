@@ -8,7 +8,7 @@ const Loading = ({ colors = defaultColor, number = 3 }) => {
 
   return (
     <StyledLoading childrenDelay={animationDelay(dotArr)}>
-      {dotArr.map((el, i) => (
+      {dotArr.map((_, i) => (
         <Dot colors={colors} key={i} />
       ))}
     </StyledLoading>
