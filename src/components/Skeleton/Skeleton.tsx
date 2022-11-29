@@ -1,56 +1,99 @@
-import { ReactNode } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
-import { blink } from "./animation";
-import { Skelcontainer, SkeletonDefaultProps, SkelItemDefault } from "./styles";
-
-type CircleProps = Partial<SkeletonDefaultProps> & {
-  radius: string;
-};
-
-export interface SkeletonProps {
-  width: string;
-  height: string;
-  children: ReactNode;
-  animation?: "blink" | "wave";
+interface SkeletonDefaultProps {
+  bgColor?: string;
+  animation?: "blink" /* | "wave" */;
+  className?: string;
 }
 
-export const Rectangle = styled.div<SkeletonDefaultProps>`
-  border-radius: 5px;
+interface RectangleProps extends SkeletonDefaultProps {
+  width: string;
+  height: string;
+}
+
+interface CircleProps extends SkeletonDefaultProps {
+  radius: string;
+}
+
+export const Rectangle = ({
+  width,
+  height,
+  bgColor,
+  animation,
+  className,
+}: RectangleProps) => {
+  return (
+    <RectangleSkel
+      width={width}
+      height={height}
+      bgColor={bgColor}
+      animation={animation}
+      className={className}
+    />
+  );
+};
+
+export const Circle = ({ radius, bgColor, animation, className }: CircleProps) => {
+  return (
+    <CircleSkel
+      radius={radius}
+      bgColor={bgColor}
+      animation={animation}
+      className={className}
+    />
+  );
+};
+
+/* 스타일 */
+export const blink = keyframes`
+  0% {
+      opacity: 0.5;
+    }
+  50% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0.5;
+  }
+`;
+
+export const wave = keyframes`
+  0% {
+      left: 0%;
+    }
+  50% {
+      left: 50%;
+  }
+  100% {
+      left: 100%;
+  }
+`;
+
+const SkelItemDefault = styled.div<SkeletonDefaultProps>`
   position: relative;
   overflow: hidden;
-  background-color: #f0f0f0;
+  background-color: ${({ bgColor }) => bgColor || "#f5f5f5"};
   animation: ${blink} 1.5s ease infinite;
+`;
 
-  ${({ width, height }) =>
-    width &&
-    height &&
+const RectangleSkel = styled(SkelItemDefault)<RectangleProps>`
+  border-radius: 4px;
+
+  ${({ width, height, bgColor }) =>
     css`
       width: ${width};
       height: ${height};
+      background-color: ${bgColor};
     `}
 `;
 
-export const Circle = styled(SkelItemDefault)<CircleProps>`
+const CircleSkel = styled(SkelItemDefault)<CircleProps>`
   border-radius: 100%;
 
-  ${({ radius }) =>
-    radius &&
+  ${({ radius, bgColor }) =>
     css`
       width: ${radius};
       height: ${radius};
+      background-color: ${bgColor};
     `}
 `;
-
-export const Skeleton = ({
-  width,
-  height,
-  children,
-  animation = "blink",
-}: SkeletonProps) => {
-  return (
-    <Skelcontainer width={width} height={height} animation={animation}>
-      {children}
-    </Skelcontainer>
-  );
-};
