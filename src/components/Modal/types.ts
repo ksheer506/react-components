@@ -32,11 +32,7 @@ export interface MainContext {
 export interface ModalStyle {
   width: string;
   height: string;
-  minWidth?: string;
-  minHeight?: string;
   position?: Position;
-  borderRadius?: string;
-  boxShadow?: string;
 }
 
 export interface ModalProps extends ModalStyle {
