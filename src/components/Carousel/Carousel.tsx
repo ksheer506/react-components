@@ -15,6 +15,8 @@ interface CarouselProps {
   animationTime?: number;
 }
 
+type Command = "next" | "prev";
+
 const classNameMatcher = (itemId: number, indexArr: number[]) => {
   const currentI = indexArr.findIndex((i) => i === itemId);
   const CLASSNAME = ["left", "main", "right"] as const;
@@ -32,6 +34,7 @@ const throttle = (() => {
   return (fn: (...args: any[]) => void, timeout: number, ...args: any[]) => {
     if (!throttled) {
       throttled = true;
+      
       fn(...args);
       setTimeout(() => {
         throttled = false;
@@ -51,29 +54,24 @@ const Carousel = ({ items, animationTime = 600 }: CarouselProps) => {
   const N = items.length;
   const [index, setIndex] = useState([N - 1, 0, 1]); // [left, front, right]
 
-  const mainIndexer = (command: "next" | "prev") => {
+  const mainIndexer = useCallback((command: Command) => {
     const step = command === "next" ? 1 : -1;
-    const nextIndex: number[] = [];
 
-    for (let i = 0; i < index.length; i += 1) {
-      nextIndex[i] = (((index[i] + step) % N) + N) % N;
-    }
-
-    setIndex(nextIndex);
-  };
+    setIndex((prev) => prev.map((e) => (((e + step) % N) + N) % N));
+  }, []);
 
   const throttledIndexer = useCallback(
-    (command: "next" | "prev") => {
+    (command: Command) => {
       throttle(mainIndexer, animationTime * 1.1, command);
     },
-    [animationTime, mainIndexer]
+    [animationTime]
   );
 
   useEffect(() => {
-    const timer = setTimeout(() => mainIndexer("next"), 3500);
+    const timer = setInterval(() => mainIndexer("next"), 3500);
 
-    return () => clearTimeout(timer);
-  }, [mainIndexer]);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <SCarouselBox>
