@@ -51,31 +51,4 @@ export const SPrev = styled(SNext)`
   transform: rotate(180deg) translateY(50%);
 `;
 
-interface ItemProps {
-  animationTime: number;
-}
 
-export const SItemList = styled.li<ItemProps>`
-  flex: 0 0 100vw;
-  position: absolute;
-  width: 100%;
-  right: -100%;
-  z-index: -1;
-  overflow: hidden;
-  transition: ${({ animationTime }) => `${animationTime}ms`} all;
-
-  &.main {
-    right: 0%;
-    z-index: 1;
-  }
-
-  &.left {
-    right: 100%;
-    z-index: -1;
-  }
-
-  &.right {
-    right: -100%;
-    z-index: -1;
-  }
-`;

@@ -1,29 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable consistent-return */
 import { ReactNode, useCallback, useEffect, useState } from "react";
+import { CarouselItem } from "./CarouselItem";
 
-import { SCarouselBox, SItemList, SNext, SPrev } from "./style";
+import { SCarouselBox, SNext, SPrev } from "./style";
 
-function classNameMatcher(itemId: number, indexArr: number[]) {
-  const currentI = indexArr.findIndex((i) => i === itemId);
-  const className = ["left", "main", "right"];
-
-  if (currentI > -1) {
-    return className[currentI];
-  }
-
-  return "";
-}
-
-interface CarouselItem {
+interface CarouselItemType {
   item: ReactNode;
   id: number;
 }
 
 interface CarouselProps {
-  items: CarouselItem[];
+  items: CarouselItemType[];
   animationTime?: number;
 }
+
+const classNameMatcher = (itemId: number, indexArr: number[]) => {
+  const currentI = indexArr.findIndex((i) => i === itemId);
+  const CLASSNAME = ["left", "main", "right"] as const;
+
+  if (currentI > -1) {
+    return CLASSNAME[currentI];
+  }
+
+  return "";
+};
 
 const throttle = (() => {
   let throttled = false;
@@ -80,13 +81,11 @@ const Carousel = ({ items, animationTime = 600 }: CarouselProps) => {
 
       <ul>
         {items.map(({ item, id }) => (
-          <SItemList
+          <CarouselItem
+            item={item}
             animationTime={animationTime}
             className={`${classNameMatcher(id, index)}`}
-            key={id}
-          >
-            {item}
-          </SItemList>
+          />
         ))}
       </ul>
 
